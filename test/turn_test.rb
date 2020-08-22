@@ -44,10 +44,25 @@ class PlayerTest < Minitest::Test
     assert_equal :mutually_assured_destruction, @mad_turn.type
   end
 
+  def test_can_check_if_cards_are_same
+    war_turn_setup
+    mad_turn_setup
+    assert @war_turn.both_cards_same_at(0)
+    assert @mad_turn.both_cards_same_at(2)
+    assert_equal false, @turn.both_cards_same_at(0)
+  end
+
   def test_can_determine_winner
     @turn.type
     @turn.determine_winner
     assert_equal @player1, @turn.winner
+  end
+
+  def test_can_assign_winner_by_comparing_cards 
+    @turn.compare_cards_at(0)
+    assert_equal @player1, @turn.winner
+    @turn.compare_cards_at(2)
+    assert_equal @player2, @turn.winner
   end
 
   def test_nobody_wins_mad_turn
@@ -55,6 +70,13 @@ class PlayerTest < Minitest::Test
     @mad_turn.type
     @mad_turn.determine_winner
     assert_equal "No Winner", @mad_turn.winner
+  end
+
+  def test_can_move_cards_to_spoils
+    @turn.move_cards_to_spoils(1)
+    assert_equal 2, @turn.spoils_of_war.length
+    @turn.move_cards_to_spoils(3)
+    assert_equal 8, @turn.spoils_of_war.length
   end
 
   def test_basic_turn_moves_cards_to_spoils
