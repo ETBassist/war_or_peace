@@ -9,7 +9,7 @@ class War
   attr_reader :full_deck, :turn, :turn_counter
 
   def initialize
-    @full_deck = CardGenerator.new("cards.txt").cards
+    @full_deck = CardGenerator.new("./lib/cards.txt").cards
     shuffled_deck = @full_deck.shuffle.each_slice(@full_deck.length / 2).to_a
     deck_1 = Deck.new(shuffled_deck[0])
     deck_2 = Deck.new(shuffled_deck[1])
