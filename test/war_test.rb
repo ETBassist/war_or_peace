@@ -63,8 +63,9 @@ class WarTest < Minitest::Test
     user_input.puts "go"
     user_input.rewind
     $stdin = user_input
+    expected = "Welcome to War! (or Peace) This game will be played with 52 cards.\nThe players today are Geordie and Riker.\nType 'GO' to start the game!\n------------------------------------------------------\nThe game begins!\n"
 
-    assert_output(/The game begins!/) { @war.show_prompt }
+    assert_output(expected) { @war.show_prompt }
   end
 
 end
