@@ -47,4 +47,24 @@ class WarTest < Minitest::Test
     assert_equal "*~*~*~* Geordie has won the game! *~*~*~*", @war.show_winner
   end
 
+  def test_game_loop
+    card1 = Card.new(:heart, "2", 2)
+    card2 = Card.new(:diamond, "10", 10)
+    @war.turn.player2.deck.cards.clear
+    @war.turn.player1.deck.cards.clear
+    @war.turn.player1.deck.add_card(card1)
+    @war.turn.player2.deck.add_card(card2)
+    @war.run_game_loop
+    assert_equal 1, @war.turn_counter
+  end
+
+  def test_show_prompt
+    user_input = StringIO.new
+    user_input.puts "go"
+    user_input.rewind
+    $stdin = user_input
+
+    assert_output(/The game begins!/) { @war.show_prompt }
+  end
+
 end

@@ -6,7 +6,7 @@ require './lib/card_generator'
 require './lib/alt_card_generator'
 
 class War
-  attr_reader :full_deck, :turn
+  attr_reader :full_deck, :turn, :turn_counter
 
   def initialize
     @full_deck = CardGenerator.new("cards.txt").cards
@@ -16,6 +16,7 @@ class War
     player_1 = Player.new("Geordie", deck_1)
     player_2 = Player.new("Riker", deck_2)
     @turn = Turn.new(player_1, player_2)
+    @turn_counter = 0
   end
 
   def create_full_deck_without_text_file
@@ -36,16 +37,15 @@ class War
   end
 
   def run_game_loop
-    turn_counter = 0
     until @turn.player1.has_lost? || @turn.player2.has_lost?
-      turn_counter += 1
+      @turn_counter += 1
       @turn.type
       @turn.determine_winner
       @turn.pile_cards
-      puts "Turn #{turn_counter} : #{@turn.display_type} #{@turn.show_cards_won}"
+      puts "Turn #{@turn_counter} : #{@turn.display_type} #{@turn.show_cards_won}"
       @turn.award_spoils(@turn.winner)
 
-      break if turn_counter == 1000000
+      break if @turn_counter == 1000000
     end
   end
 
