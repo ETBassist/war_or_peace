@@ -54,8 +54,10 @@ class WarTest < Minitest::Test
     @war.turn.player1.deck.cards.clear
     @war.turn.player1.deck.add_card(card1)
     @war.turn.player2.deck.add_card(card2)
-    @war.run_game_loop
+    assert_output("Turn 1 :  Riker won 2 cards\n") { @war.run_game_loop }
     assert_equal 1, @war.turn_counter
+    assert_equal "Riker", @war.turn.winner.name
+    assert @war.turn.player1.has_lost?
   end
 
   def test_show_prompt
