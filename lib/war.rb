@@ -57,6 +57,10 @@ class War
     end
   end
 
+  def set_counter(number)
+    @turn_counter = number
+  end
+
   def start
     show_prompt
     run_game_loop
