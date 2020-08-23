@@ -40,11 +40,11 @@ class WarTest < Minitest::Test
   end
 
   def test_can_show_winner
-    assert_equal "---- DRAW ----", @war.show_winner
+    assert_output(/---- DRAW ----/) { @war.show_winner }
     @war.turn.player2.deck.cards.clear
     @war.turn.type
     @war.turn.determine_winner
-    assert_equal "*~*~*~* Geordie has won the game! *~*~*~*", @war.show_winner
+    assert_output("*~*~*~* Geordie has won the game! *~*~*~*\n") {@war.show_winner}
   end
 
   def test_game_loop
