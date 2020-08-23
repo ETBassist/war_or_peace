@@ -2,7 +2,7 @@ require './test/test_helper'
 
 class CardGeneratorTest < Minitest::Test
   def setup
-    @card_generator = CardGenerator.new("cards.txt")
+    @card_generator = CardGenerator.new("./lib/cards.txt")
   end
 
   def test_it_exists

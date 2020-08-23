@@ -40,11 +40,34 @@ class WarTest < Minitest::Test
   end
 
   def test_can_show_winner
-    assert_equal "---- DRAW ----", @war.show_winner
+    assert_output(/---- DRAW ----/) { @war.show_winner }
     @war.turn.player2.deck.cards.clear
     @war.turn.type
     @war.turn.determine_winner
-    assert_equal "*~*~*~* Geordie has won the game! *~*~*~*", @war.show_winner
+    assert_output("*~*~*~* Geordie has won the game! *~*~*~*\n") {@war.show_winner}
+  end
+
+  def test_game_loop
+    card1 = Card.new(:heart, "2", 2)
+    card2 = Card.new(:diamond, "10", 10)
+    @war.turn.player2.deck.cards.clear
+    @war.turn.player1.deck.cards.clear
+    @war.turn.player1.deck.add_card(card1)
+    @war.turn.player2.deck.add_card(card2)
+    assert_output("Turn 1 :  Riker won 2 cards\n") { @war.run_game_loop }
+    assert_equal 1, @war.turn_counter
+    assert_equal "Riker", @war.turn.winner.name
+    assert @war.turn.player1.has_lost?
+  end
+
+  def test_show_prompt
+    user_input = StringIO.new
+    user_input.puts "go"
+    user_input.rewind
+    $stdin = user_input
+    expected = "Welcome to War! (or Peace) This game will be played with 52 cards.\nThe players today are Geordie and Riker.\nType 'GO' to start the game!\n------------------------------------------------------\nThe game begins!\n"
+
+    assert_output(expected) { @war.show_prompt }
   end
 
 end
