@@ -70,4 +70,14 @@ class WarTest < Minitest::Test
     assert_output(expected) { @war.show_prompt }
   end
 
+  def test_start_and_end_in_draw_at_one_million_turns
+    user_input = StringIO.new
+    user_input.puts "go"
+    user_input.rewind
+    $stdin = user_input
+    @war.set_counter(999999)
+    assert_equal 999999, @war.turn_counter
+    assert_output(/---- DRAW ----/) {@war.start}
+  end
+
 end
